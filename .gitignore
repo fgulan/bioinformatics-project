@@ -31,6 +31,7 @@
 *.out
 *.app
 
+build_script.sh
 
 # Created by https://www.gitignore.io/api/cmake,clion,linux,macos,windows,visualstudio,visualstudiocode
 
