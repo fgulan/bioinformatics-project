@@ -1,3 +1,7 @@
+//
+// Created by Jure Cular on 28/12/2017.
+//
+
 #ifndef BIOINFORMATICS_PROJECT_COMMON_H
 #define BIOINFORMATICS_PROJECT_COMMON_H
 
