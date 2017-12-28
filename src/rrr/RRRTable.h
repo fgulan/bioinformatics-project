@@ -7,8 +7,25 @@
 
 #include "../shared/common.h"
 
-class RRRTable {
+class RRRTable
+{
+public:
 
+    block_size_t block_size;
+
+    explicit RRRTable(block_size_t block_size);
+
+private:
+
+    table_t table;
+
+    std::vector<bit_offset_t> bit_offset_vector;
+
+    rank_vector_per_bit_t
+    rank_per_bit(block_vector_t const &vector) const;
+
+    block_bit_t
+    block_vector_to_bit_block(block_vector_t const &block_vector) const;
 };
 
 
