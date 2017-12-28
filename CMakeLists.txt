@@ -3,3 +3,4 @@ project(bioinformatics_project)
 
 set(CMAKE_CXX_STANDARD 17)
 
+add_executable(bioinformatics_project src/main.cpp src/shared/common.h)
