@@ -6,6 +6,8 @@
 #include <cmath>
 #include "RRRTable.h"
 
+// MARK: - Constructors -
+
 RRRTable::RRRTable(block_size_t block_size) : table{block_size + 1},
                                               bit_offset_vector(block_size + 1, 0),
                                               block_size{block_size}
@@ -26,6 +28,12 @@ RRRTable::RRRTable(block_size_t block_size) : table{block_size + 1},
         bit_offset_vector[i] = static_cast<bit_offset_t>(std::ceil(std::log2(table[i].size())));
     }
 }
+
+// MARK: - Public methods -
+
+
+
+// MARK: - Private methods -
 
 rank_vector_per_bit_t RRRTable::rank_per_bit(block_vector_t const &vector) const
 {
@@ -54,4 +62,9 @@ block_bit_t RRRTable::block_vector_to_bit_block(block_vector_t const &block_vect
     block >>= 1;
 
     return block;
+}
+
+class_t RRRTable::get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const
+{
+    return table[block_rank][offset].second[index];
 }

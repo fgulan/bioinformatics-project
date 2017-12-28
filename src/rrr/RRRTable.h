@@ -15,6 +15,9 @@ public:
 
     explicit RRRTable(block_size_t block_size);
 
+    class_t
+    get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const;
+
 private:
 
     table_t table;
