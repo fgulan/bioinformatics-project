@@ -12,7 +12,7 @@ RRRTable::RRRTable(block_size_t block_size) : table{block_size + 1},
 {
     assert(block_size != 0);
 
-    for (size_t i = 0; i < block_size; ++i) {
+    for (size_t i = 0; i < block_size + 1; ++i) {
         block_vector_t block(block_size, ZERO);
 
         for (auto it = block.end() - i; it != block.end(); ++it) {
