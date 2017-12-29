@@ -15,6 +15,18 @@ public:
 
     explicit RRRTable(block_size_t block_size);
 
+    RRRTable() = default;
+
+    RRRTable(RRRTable const &) = default;
+
+    RRRTable(RRRTable &&) = default;
+
+    RRRTable &
+    operator=(RRRTable const &) = default;
+
+    RRRTable &
+    operator=(RRRTable &&) = default;
+
     offset_t
     get_offset_for_rank(class_t rank, block_vector_t const &block_vector) const;
 
