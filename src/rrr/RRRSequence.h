@@ -1,0 +1,14 @@
+//
+// Created by Filip Gulan on 29/12/2017.
+//
+
+#ifndef BIOINFORMATICS_PROJECT_RRRSEQUENCE_H
+#define BIOINFORMATICS_PROJECT_RRRSEQUENCE_H
+
+
+class RRRSequence {
+
+};
+
+
+#endif //BIOINFORMATICS_PROJECT_RRRSEQUENCE_H
