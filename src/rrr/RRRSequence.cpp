@@ -69,7 +69,25 @@ RRRSequence::RRRSequence(block_vector_t const &sequence,
 class_t
 RRRSequence::rank1(size_t index) const
 {
-    return 0;
+    // Caculate block/superblock index
+    size_t block_index = index / block_size;
+    size_t superblock_index = block_index / blocks_in_superblock;
+
+    // Index is out of bounds
+    assert(superblock_index < superblocks.size());
+
+    // Accumulate rank from previous superblocks
+    class_t result = superblocks[superblock_index].first;
+    auto i = superblock_index * blocks_in_superblock;
+    for (; i != block_index; ++i) {
+        result += rrr_sequence[i].first;
+    }
+
+    // Accumulate rank from last block
+    result += table.get_rank_at_index(rrr_sequence[i].first,
+                                      rrr_sequence[i].second,
+                                      index % block_size);
+    return result;
 }
 
 class_t
