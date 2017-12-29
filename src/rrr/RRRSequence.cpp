@@ -86,3 +86,18 @@ RRRSequence::popcount_for_block(block_vector_t block) const
     }
     return rank;
 }
+
+uint8_t
+RRRSequence::get_blocks_in_superblock(size_t sequence_length) const
+{
+    auto block_size = get_block_size(sequence_length);
+    return static_cast<uint8_t>(std::pow(std::floor(std::log2(sequence_length)), 2) / block_size);
+}
+
+block_size_t
+RRRSequence::get_block_size(size_t sequence_length) const
+{
+    auto log_sequence_len = std::log2(sequence_length);
+    return static_cast<block_size_t>(static_cast<block_size_t>(
+            std::max<double>(std::floor(log_sequence_len / 2), 1)));
+}
