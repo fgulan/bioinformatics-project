@@ -19,6 +19,12 @@ public:
 
     RRRSequence(block_vector_t const &sequence, RRRTable const &table);
 
+    class_t
+    rank1(size_t index) const;
+
+    class_t
+    rank0(size_t index) const;
+
 private:
 
     RRRTable table;

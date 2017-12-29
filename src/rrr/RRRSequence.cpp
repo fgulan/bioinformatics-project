@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <cassert>
 #include "RRRSequence.h"
 
 // MARK: - Constructors -
@@ -64,6 +65,18 @@ RRRSequence::RRRSequence(block_vector_t const &sequence,
                                                                            table) {};
 
 // MARK: - Public methods -
+
+class_t
+RRRSequence::rank1(size_t index) const
+{
+    return 0;
+}
+
+class_t
+RRRSequence::rank0(size_t index) const
+{
+    return static_cast<class_t>(index - rank1(index) + 1);
+}
 
 // MARK: - Private methods -
 
