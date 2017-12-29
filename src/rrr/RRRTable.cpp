@@ -59,6 +59,33 @@ class_t RRRTable::get_rank_at_index(class_t block_rank, offset_t offset, uint64_
     return table[block_rank][offset].second[index];
 }
 
+size_t RRRTable::index_with_rank1(class_t block_rank, offset_t offset, class_t rank) const
+{
+    rank_vector_per_bit_t rank_vector = table[block_rank][offset].second;
+    size_t index, size = rank_vector.size();
+
+    for (size_t i = 0; i < size; ++i) {
+        if (rank == rank_vector[i]) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+size_t RRRTable::index_with_rank0(class_t block_rank, offset_t offset, class_t rank) const
+{
+    rank_vector_per_bit_t rank_vector = table[block_rank][offset].second;
+    size_t index, size = rank_vector.size();
+
+    for (size_t i = 0; i < size; ++i) {
+        if (rank == i + 1 - rank_vector[i]) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
 
 // MARK: - Private methods -
 

@@ -24,6 +24,12 @@ public:
     class_t
     get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const;
 
+    size_t
+    index_with_rank1(class_t block_rank, offset_t offset, class_t rank) const;
+
+    size_t
+    index_with_rank0(class_t block_rank, offset_t offset, class_t rank) const;
+
 private:
 
     table_t table;
