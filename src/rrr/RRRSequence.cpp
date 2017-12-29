@@ -96,6 +96,47 @@ RRRSequence::rank0(size_t index) const
     return static_cast<class_t>(index - rank1(index) + 1);
 }
 
+size_t
+RRRSequence::select1(uint64_t count) const
+{
+    // Get superblock with whose cumulative rank is smaller than count
+    // Start from second superblock since we will use one before (first possibility)
+    size_t superblock_index = 1, size = superblocks.size();
+    for (; superblock_index < size; ++superblock_index) {
+        if (count <= superblocks[superblock_index].first) {
+            break;
+        }
+    }
+    --superblock_index;
+
+    // Get current superblock with whose cumulative rank is smaller than count
+    class_t current_rank = superblocks[superblock_index].first;
+    offset_t offset = superblocks[superblock_index].second;
+    size_t sequence_size = rrr_sequence.size();
+
+    for (; offset < sequence_size; ++offset) {
+        if (current_rank + rrr_sequence[offset].first >= count) {
+            break;
+        }
+        current_rank += rrr_sequence[offset].first;
+    }
+
+    // Take care if we are at sequence_last_index + 1 in
+    // case that break isn't executed in previous for loop
+    if (offset == sequence_size) {
+        offset--;
+    }
+
+    // Get the index in block whose rank is equal to count - current_rank
+    size_t result = table.index_with_rank1(rrr_sequence[offset].first,
+                                           rrr_sequence[offset].second,
+                                           static_cast<class_t>(count) - current_rank);
+    // Index to this superblock
+    result += offset * block_size;
+    return result;
+}
+
+
 // MARK: - Private methods -
 
 std::pair<class_t, offset_t>

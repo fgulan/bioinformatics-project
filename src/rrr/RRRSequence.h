@@ -25,6 +25,9 @@ public:
     class_t
     rank0(size_t index) const;
 
+    size_t
+    select1(uint64_t count) const;
+
 private:
 
     RRRTable table;
