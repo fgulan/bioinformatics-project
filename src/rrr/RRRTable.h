@@ -13,6 +13,8 @@ public:
 
     block_size_t block_size;
 
+public:
+
     explicit RRRTable(block_size_t block_size);
 
     RRRTable() = default;
@@ -47,6 +49,8 @@ private:
     table_t table;
 
     std::vector<bit_offset_t> bit_offset_vector;
+
+private:
 
     rank_vector_per_bit_t
     rank_per_bit(block_vector_t const &vector) const;
