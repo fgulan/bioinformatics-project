@@ -15,6 +15,12 @@ public:
 
     explicit RRRTable(block_size_t block_size);
 
+    offset_t
+    get_offset_for_rank(class_t rank, block_vector_t const &block_vector) const;
+
+    bit_offset_t
+    get_bit_offset(class_t rank) const;
+
     class_t
     get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const;
 

@@ -31,6 +31,30 @@ RRRTable::RRRTable(block_size_t block_size) : table{block_size + 1},
 
 // MARK: - Public methods -
 
+offset_t
+RRRTable::get_offset_for_rank(class_t rank, block_vector_t const &block) const
+{
+    block_bit_t block_bits = block_vector_to_bit_block(block);
+
+    // This should never happen! It means that rank of
+    // block is not equal to rank or RRRTable is inconsistent.
+    offset_t offset = -1;
+
+    for (size_t i = 0, size = table[rank].size(); i < size; ++i) {
+        if (block_bits == table[rank][i].first) {
+            offset = i;
+            break;
+        }
+    }
+    
+    return offset;
+}
+
+
+class_t RRRTable::get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const
+{
+    return table[block_rank][offset].second[index];
+}
 
 
 // MARK: - Private methods -
@@ -62,9 +86,4 @@ block_bit_t RRRTable::block_vector_to_bit_block(block_vector_t const &block_vect
     block >>= 1;
 
     return block;
-}
-
-class_t RRRTable::get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const
-{
-    return table[block_rank][offset].second[index];
 }
