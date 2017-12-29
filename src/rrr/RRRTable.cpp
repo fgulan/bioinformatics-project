@@ -31,8 +31,7 @@ RRRTable::RRRTable(block_size_t block_size) : table{block_size + 1},
 
 // MARK: - Public methods -
 
-offset_t
-RRRTable::get_offset_for_rank(class_t rank, block_vector_t const &block) const
+offset_t RRRTable::get_offset_for_rank(class_t rank, block_vector_t const &block) const
 {
     block_bit_t block_bits = block_vector_to_bit_block(block);
 
@@ -46,10 +45,14 @@ RRRTable::get_offset_for_rank(class_t rank, block_vector_t const &block) const
             break;
         }
     }
-    
+
     return offset;
 }
 
+bit_offset_t RRRTable::get_bit_offset(class_t rank) const
+{
+    return bit_offset_vector[rank];
+}
 
 class_t RRRTable::get_rank_at_index(class_t block_rank, offset_t offset, uint64_t index) const
 {
