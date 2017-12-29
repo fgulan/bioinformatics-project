@@ -28,4 +28,9 @@ using table_t = std::vector<std::vector<std::pair<block_bit_t, rank_vector_per_b
 
 using rank_vector_per_bit_t = std::vector<class_t>;
 
+using superblock_size_t = size_t;
+
+using rrr_sequence_t = std::vector<std::pair<class_t, offset_t>>;
+using superblock_sequence_t = std::vector<std::pair<class_t, offset_t>>;
+
 #endif //BIOINFORMATICS_PROJECT_COMMON_H
