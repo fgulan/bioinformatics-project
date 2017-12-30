@@ -35,4 +35,41 @@ WaveletTree::WaveletTree(std::string const &sequence)
 
 // MARK: - Public methods -
 
+size_t WaveletTree::rank(char_t symbol, size_t index) const
+{
+    auto const *current_node = root_;
+    auto current_rank = index;
+    size_t symbol_index = symbol_index_in_alphabet(symbol);
+
+    while (current_node) {
+        // Due to 0-biasing (n-th bit, but we count
+        // indexes from 0, so -1 to current index)
+        if (current_node != root_) {
+            current_rank -= 1;
+        }
+
+        if (symbol_index < current_node->alphabet_mid_index()) {
+            current_rank = current_node->rank0(current_rank);
+            current_node = current_node->left();
+        } else {
+            current_rank = current_node->rank1(current_rank);
+            current_node = current_node->right();
+        }
+
+        // Break point, makes no sense to access < 0 indexes
+        // since they do not exist...
+        if (current_rank == 0) {
+            break;
+        }
+    }
+    return current_rank;
+}
+
 // MARK: - Private methods -
+
+size_t WaveletTree::symbol_index_in_alphabet(char_t symbol) const
+{
+    // Good job C++, really nice and expressive...
+    auto it_symbol = std::lower_bound(alphabet_.begin(), alphabet_.end(), symbol);
+    return static_cast<size_t>(std::distance(alphabet_.begin(), it_symbol));
+}

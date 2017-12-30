@@ -15,10 +15,17 @@ public:
 
     explicit WaveletTree(std::string const &sequence);
 
+    size_t rank(char_t symbol, size_t index) const;
+
 private:
+
     alphabet_t alphabet_;
     WaveletNode const *root_;
 
+
+private:
+
+    size_t symbol_index_in_alphabet(char_t symbol) const;
 };
 
 #endif //BIOINFORMATICS_PROJECT_WAVELETTREE_H
