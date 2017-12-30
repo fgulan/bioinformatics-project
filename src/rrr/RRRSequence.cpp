@@ -136,6 +136,11 @@ RRRSequence::select1(uint64_t count) const
     return result;
 }
 
+size_t RRRSequence::select0(uint64_t count) const
+{
+    // TODO: Implement this
+    return 0;
+}
 
 // MARK: - Private methods -
 

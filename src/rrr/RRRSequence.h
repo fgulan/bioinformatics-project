@@ -40,6 +40,9 @@ public:
     size_t
     select1(uint64_t count) const;
 
+    size_t
+    select0(uint64_t count) const;
+
 private:
 
     RRRTable table;

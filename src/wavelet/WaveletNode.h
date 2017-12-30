@@ -20,6 +20,12 @@ public:
                 RRRTable const &rrr_table,
                 WaveletNode const *parent = nullptr);
 
+    class_t rank1(size_t index) const;
+    class_t rank0(size_t index) const;
+
+    size_t select1(uint64_t count) const;
+    size_t select0(uint64_t count) const;
+
     size_t alphabet_mid_index() const;
     size_t alphabet_start_index() const;
     size_t alphabet_end_index() const;
@@ -40,6 +46,5 @@ private:
     size_t alphabet_start_;
     size_t alphabet_end_;
 };
-
 
 #endif //BIOINFORMATICS_PROJECT_WAVELETNODE_H

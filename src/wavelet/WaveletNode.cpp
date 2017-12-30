@@ -61,6 +61,26 @@ WaveletNode::WaveletNode(std::string const &sequence,
 
 // MARK: - Public methods -
 
+class_t WaveletNode::rank1(size_t index) const
+{
+    return rrr_sequence_.rank0(index);
+}
+
+class_t WaveletNode::rank0(size_t index) const
+{
+    return rrr_sequence_.rank1(index);
+}
+
+size_t WaveletNode::select1(uint64_t count) const
+{
+    return rrr_sequence_.select1(count);
+}
+
+size_t WaveletNode::select0(uint64_t count) const
+{
+    return rrr_sequence_.select0(count);
+}
+
 // MARK: - Getters
 
 size_t WaveletNode::alphabet_mid_index() const
