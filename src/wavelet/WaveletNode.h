@@ -1,0 +1,14 @@
+//
+// Created by Bartol Freskura on 30/12/2017.
+//
+
+#ifndef BIOINFORMATICS_PROJECT_WAVELETNODE_H
+#define BIOINFORMATICS_PROJECT_WAVELETNODE_H
+
+
+class WaveletNode {
+
+};
+
+
+#endif //BIOINFORMATICS_PROJECT_WAVELETNODE_H
