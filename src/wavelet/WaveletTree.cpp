@@ -65,6 +65,26 @@ size_t WaveletTree::rank(char_t symbol, size_t index) const
     return current_rank;
 }
 
+size_t WaveletTree::select(char_t symbol, size_t count) const
+{
+    size_t symbol_index = symbol_index_in_alphabet(symbol);
+    WaveletNode const *current_node = starting_node_for_symbol_index(symbol_index);
+    auto select_val = symbol_index < current_node->alphabet_mid_index()
+                      ? current_node->select0(count)
+                      : current_node->select1(count);
+
+    while (current_node != root_) {
+        // Due to 0-biasing (n-th bit, but we count
+        // indexes from 0, so +1 to current select value)
+        select_val++;
+        WaveletNode const *parent = current_node->parent();
+        select_val = current_node == parent->left()
+                     ? parent->select0(select_val) : parent->select1(select_val);
+        current_node = parent;
+    }
+    return select_val;
+}
+
 // MARK: - Private methods -
 
 size_t WaveletTree::symbol_index_in_alphabet(char_t symbol) const
@@ -73,3 +93,16 @@ size_t WaveletTree::symbol_index_in_alphabet(char_t symbol) const
     auto it_symbol = std::lower_bound(alphabet_.begin(), alphabet_.end(), symbol);
     return static_cast<size_t>(std::distance(alphabet_.begin(), it_symbol));
 }
+
+WaveletNode const *WaveletTree::starting_node_for_symbol_index(size_t symbol_index) const
+{
+    WaveletNode const *return_node, *current_node = root_;
+    while (current_node) {
+        return_node = current_node;
+        current_node = symbol_index < current_node->alphabet_mid_index()
+                       ? current_node->left()
+                       : current_node->right();
+    }
+    return return_node;
+}
+
