@@ -33,4 +33,7 @@ using superblock_size_t = size_t;
 using rrr_sequence_t = std::vector<std::pair<class_t, offset_t>>;
 using superblock_sequence_t = std::vector<std::pair<class_t, offset_t>>;
 
+using char_t = char;
+using alphabet_t = std::vector<char_t>;
+
 #endif //BIOINFORMATICS_PROJECT_COMMON_H

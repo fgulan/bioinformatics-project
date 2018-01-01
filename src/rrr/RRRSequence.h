@@ -12,6 +12,18 @@ class RRRSequence
 {
 public:
 
+    RRRSequence() = default;
+
+    RRRSequence(RRRSequence &&) = default;
+
+    RRRSequence(RRRSequence const &) = default;
+
+    RRRSequence &
+    operator=(RRRSequence const &) = default;
+
+    RRRSequence &
+    operator=(RRRSequence &&) = default;
+
     RRRSequence(block_vector_t const &sequence,
                 uint8_t blocks_in_superblock,
                 block_size_t block_size,
@@ -27,6 +39,9 @@ public:
 
     size_t
     select1(uint64_t count) const;
+
+    size_t
+    select0(uint64_t count) const;
 
 private:
 
