@@ -159,7 +159,7 @@ size_t RRRSequence::select0(uint64_t count) const
     // Get the index in block whose rank is equal to count - current_rank0
     size_t result = table.index_with_rank0(rrr_sequence[block_index].first,
                                            rrr_sequence[block_index].second,
-                                           static_cast<class_t>(count - current_rank0))
+                                           static_cast<class_t>(count - current_rank0));
     // Index to this superblock
     result += block_index * block_size;
     return result;
