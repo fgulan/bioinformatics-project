@@ -64,6 +64,8 @@ private:
     uint8_t get_blocks_in_superblock(size_t sequence_length) const;
 
     block_size_t get_block_size(size_t sequence_length) const;
+
+    size_t get_superblock0_index_for_count(uint64_t count) const;
 };
 
 

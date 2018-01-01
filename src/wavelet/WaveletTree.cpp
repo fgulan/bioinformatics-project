@@ -105,4 +105,3 @@ WaveletNode const *WaveletTree::starting_node_for_symbol_index(size_t symbol_ind
     }
     return return_node;
 }
-

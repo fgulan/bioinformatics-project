@@ -138,8 +138,29 @@ RRRSequence::select1(uint64_t count) const
 
 size_t RRRSequence::select0(uint64_t count) const
 {
-    // TODO: Implement this
-    return 0;
+    // Get superblock with whose cumulative rank0 is smaller than count
+    size_t superblock_index = get_superblock0_index_for_count(count);
+    class_t current_rank0 = superblock_index * blocks_in_superblock * block_size
+                            - superblocks[superblock_index].first;
+    offset_t block_index = superblocks[superblock_index].second;
+    size_t sequence_size = rrr_sequence.size();
+    offset_t block_end_index = (superblock_index + 1) * blocks_in_superblock;
+
+    for (; block_index < sequence_size && block_index < block_end_index; ++block_index) {
+        class_t rank0_in_block = block_size - rrr_sequence[block_index].first;
+        if (current_rank0 + rank0_in_block >= count) {
+            break;
+        }
+        current_rank0 += rank0_in_block;
+    }
+
+    // Get the index in block whose rank is equal to count - current_rank0
+    size_t result = table.index_with_rank0(rrr_sequence[block_index].first,
+                                           rrr_sequence[block_index].second,
+                                           static_cast<class_t>(count - current_rank0))
+    // Index to this superblock
+    result += block_index * block_size;
+    return result;
 }
 
 // MARK: - Private methods -
@@ -177,4 +198,21 @@ RRRSequence::get_block_size(size_t sequence_length) const
     auto log_sequence_len = std::log2(sequence_length);
     return static_cast<block_size_t>(static_cast<block_size_t>(
             std::max<double>(std::floor(log_sequence_len / 2), 1)));
+}
+
+size_t RRRSequence::get_superblock0_index_for_count(uint64_t count) const
+{
+    size_t begin = 1;
+    size_t end = superblocks.size() - 1;
+    while (begin < end) {
+        size_t mid = (begin + end) / 2;
+        auto rank0_mid = mid * blocks_in_superblock * block_size - superblocks[mid].first;
+
+        if (rank0_mid >= count) {
+            end = mid - 1;
+        } else {
+            begin = mid + 1;
+        }
+    }
+    return begin - 1;
 }
