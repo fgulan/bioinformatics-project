@@ -3,4 +3,4 @@ project(bioinformatics_project)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(bioinformatics_project src/main.cpp src/shared/common.h src/rrr/RRRTable.cpp src/rrr/RRRTable.h src/rrr/RRRSequence.cpp src/rrr/RRRSequence.h src/wavelet/WaveletNode.cpp src/wavelet/WaveletNode.h src/wavelet/WaveletTree.cpp src/wavelet/WaveletTree.h)
+add_executable(bioinformatics_project src/main.cpp src/shared/common.h src/rrr/RRRTable.cpp src/rrr/RRRTable.h src/rrr/RRRSequence.cpp src/rrr/RRRSequence.h src/wavelet/WaveletNode.cpp src/wavelet/WaveletNode.h src/wavelet/WaveletTree.cpp src/wavelet/WaveletTree.h tests/catch.h tests/rrr_sequence_tests.cpp)
