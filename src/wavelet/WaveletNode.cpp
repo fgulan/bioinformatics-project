@@ -63,12 +63,12 @@ WaveletNode::WaveletNode(std::string const &sequence,
 
 class_t WaveletNode::rank1(size_t index) const
 {
-    return rrr_sequence_.rank0(index);
+    return rrr_sequence_.rank1(index);
 }
 
 class_t WaveletNode::rank0(size_t index) const
 {
-    return rrr_sequence_.rank1(index);
+    return rrr_sequence_.rank0(index);
 }
 
 size_t WaveletNode::select1(uint64_t count) const
