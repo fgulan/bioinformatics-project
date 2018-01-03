@@ -20,8 +20,26 @@ std::string read_fasta_file(char const* filename)
         if (line.empty() || line[0] == '>' || line[0] == ',') {
             continue;
         }
-        line.erase(line.find_last_not_of(" \n\r\t") + 1);
         content += line;
     }
     return content;
+}
+
+unsigned long get_current_memory()
+{
+#ifdef __APPLE__
+    struct task_basic_info t_info;
+    mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
+
+    if (KERN_SUCCESS != task_info(mach_task_self(),
+                                  TASK_BASIC_INFO, (task_info_t)&t_info,
+                                  &t_info_count)) {
+        return 0;
+    }
+    return t_info.resident_size;
+#elif __linux
+    return 0;
+#else
+    return 0;
+#endif
 }
