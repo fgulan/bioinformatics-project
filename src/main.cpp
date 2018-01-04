@@ -5,7 +5,7 @@
 
 int main()
 {
-    std::string fasta = read_fasta_file("tests/sequences/bact.fa");
+    std::string fasta = read_fasta_file("tests/sequences/ecoli.fa");
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
