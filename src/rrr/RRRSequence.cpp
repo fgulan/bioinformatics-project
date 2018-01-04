@@ -165,6 +165,18 @@ size_t RRRSequence::select0(uint64_t count) const
     return result;
 }
 
+char_t
+RRRSequence::access(size_t index) const
+{
+    char_t value;
+    if (index == 0) {
+        value = static_cast<char_t>(rank1(index));
+    } else {
+        value = static_cast<char_t>(rank1(index) - rank1(index - 1));
+    }
+    return value;
+}
+
 // MARK: - Private methods -
 
 std::pair<class_t, offset_t>

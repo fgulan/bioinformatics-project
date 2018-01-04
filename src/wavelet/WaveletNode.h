@@ -26,6 +26,8 @@ public:
     size_t select1(uint64_t count) const;
     size_t select0(uint64_t count) const;
 
+    char_t access(size_t index) const;
+
     size_t alphabet_mid_index() const;
     size_t alphabet_start_index() const;
     size_t alphabet_end_index() const;

@@ -43,6 +43,9 @@ public:
     size_t
     select0(uint64_t count) const;
 
+    char_t
+    access(size_t index) const;
+
 private:
 
     RRRTable table;
