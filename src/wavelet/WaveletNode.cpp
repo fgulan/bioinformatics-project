@@ -81,6 +81,11 @@ size_t WaveletNode::select0(uint64_t count) const
     return rrr_sequence_.select0(count);
 }
 
+char_t WaveletNode::access(size_t index) const
+{
+    return rrr_sequence_.access(index);
+}
+
 // MARK: - Getters
 
 size_t WaveletNode::alphabet_mid_index() const

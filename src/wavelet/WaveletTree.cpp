@@ -85,6 +85,38 @@ size_t WaveletTree::select(char_t symbol, size_t count) const
     return select_val;
 }
 
+char_t WaveletTree::access(size_t index) const
+{
+    auto const *current_node = root_;
+    size_t current_index = index;
+    char_t symbol= 0;
+
+    while (current_node) {
+        // Due to 0-biasing (n-th bit, but we count
+        // indexes from 0, so -1 to current index)
+        if (current_node != root_) {
+            current_index -= 1;
+        }
+
+        if (current_node->access(current_index) == 0) {
+            current_index = current_node->rank0(current_index);
+            if (!current_node->left()) {
+                symbol = alphabet_[current_node->alphabet_start_index()];
+                break;
+            }
+            current_node = current_node->left();
+        } else {
+            current_index = current_node->rank1(current_index);
+            if (!current_node->right()) {
+                symbol = alphabet_[current_node->alphabet_end_index()];
+                break;
+            }
+            current_node = current_node->right();
+        }
+    }
+    return symbol;
+}
+
 // MARK: - Private methods -
 
 size_t WaveletTree::symbol_index_in_alphabet(char_t symbol) const

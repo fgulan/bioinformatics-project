@@ -17,7 +17,7 @@ public:
 
     size_t rank(char_t symbol, size_t index) const;
     size_t select(char_t symbol, size_t count) const;
-
+    char_t access(size_t index) const;
 private:
 
     alphabet_t alphabet_;
