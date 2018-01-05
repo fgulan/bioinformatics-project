@@ -5,6 +5,10 @@
 #include <fstream>
 #include "bioinf_utility.h"
 
+#ifdef __APPLE__
+#include <mach/mach.h>
+#endif
+
 std::string read_fasta_file(char const* filename)
 {
     std::ifstream fasta_stream(filename);
@@ -25,7 +29,7 @@ std::string read_fasta_file(char const* filename)
     return content;
 }
 
-unsigned long get_current_memory()
+measured_memory_t get_current_memory()
 {
 #ifdef __APPLE__
     struct task_basic_info t_info;

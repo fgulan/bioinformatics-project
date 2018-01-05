@@ -36,4 +36,7 @@ using superblock_sequence_t = std::vector<std::pair<class_t, offset_t>>;
 using char_t = char;
 using alphabet_t = std::vector<char_t>;
 
+using measured_time_t = long long;
+using measured_memory_t = unsigned long;
+
 #endif //BIOINFORMATICS_PROJECT_COMMON_H
