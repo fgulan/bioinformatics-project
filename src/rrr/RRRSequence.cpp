@@ -218,7 +218,7 @@ size_t RRRSequence::get_superblock0_index_for_count(uint64_t count) const
 {
     size_t begin = 1;
     size_t end = superblocks.size() - 1;
-    while (begin < end) {
+    while (begin <= end) {
         size_t mid = (begin + end) / 2;
         auto rank0_mid = mid * blocks_in_superblock * block_size - superblocks[mid].first;
 
