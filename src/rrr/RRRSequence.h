@@ -76,6 +76,8 @@ private:
 
     static void pack(class_t rank, bit_rank_t rank_bit_size, offset_t offset, size_t &index, rrr_sequence_t &sequence, uint8_t &filled_bits, RRRTable const &rrrTable);
 
+    static class_t unpack_rank(size_t index, bit_rank_t rank_bit_size, rrr_sequence_t const &sequence);
+
     static std::pair<class_t, offset_t> unpack(size_t index, bit_rank_t rank_bit_size, RRRTable const &rrrTable, rrr_sequence_t const &sequence);
 };
 

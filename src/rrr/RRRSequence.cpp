@@ -76,20 +76,17 @@ RRRSequence::rank1(size_t index) const
     size_t block_index = index / block_size;
     size_t superblock_index = block_index / blocks_in_superblock;
 
-    // Index is out of bounds
-    assert(superblock_index < superblocks.size());
-
     // Accumulate rank from previous superblocks
     class_t result = superblocks[superblock_index].first;
     superblock_offset_t offset = superblocks[superblock_index].second;
-    for(size_t i = superblock_index * blocks_in_superblock; i < block_index; ++i) {
-        // TODO: decode bits and add rank
-        class_t rank = unpack(offset, rank_bit_size, table, rrr_sequence).first;
+
+    for(size_t i = superblock_index * blocks_in_superblock; i != block_index; ++i) {
+        class_t rank = unpack_rank(offset, rank_bit_size, rrr_sequence);
         result += rank;
         offset += rank_bit_size + table.get_bit_offset(rank);
     }
 
-    class_t rank;
+    class_t rank = unpack_rank(offset, rank_bit_size, rrr_sequence);
     offset_t table_offset;
     std::tie(rank, table_offset) = unpack(offset, rank_bit_size, table, rrr_sequence);
 
@@ -119,13 +116,14 @@ RRRSequence::select1(uint64_t count) const
     // Get current superblock with whose cumulative rank is smaller than count
     class_t current_rank = superblocks[superblock_index].first;
     superblock_offset_t offset = superblocks[superblock_index].second;
-    size_t sequence_size = rrr_sequence.size();
 
     size_t block_index = superblock_index * blocks_in_superblock;
-    size_t block_end_index = (superblock_index + 1) * blocks_in_superblock;
+    size_t block_end_index = block_index + blocks_in_superblock;
+
+    class_t rank;
 
     for (; block_index < block_end_index; ++block_index) {
-        class_t rank = unpack(offset, rank_bit_size, table, rrr_sequence).first;
+        rank = unpack_rank(offset, rank_bit_size, rrr_sequence);
         if (current_rank + rank >= count) {
             break;
         }
@@ -133,8 +131,11 @@ RRRSequence::select1(uint64_t count) const
         current_rank += rank;
     }
 
-    // TODO: decode bits and add rank
-    class_t rank;
+
+    if (block_index == block_end_index) {
+        offset -= (rank_bit_size + table.get_bit_offset(rank));
+    }
+
     offset_t offset_table;
     std::tie(rank, offset_table) = unpack(offset, rank_bit_size, table, rrr_sequence);
 
@@ -156,10 +157,12 @@ size_t RRRSequence::select0(uint64_t count) const
     superblock_offset_t offset = superblocks[superblock_index].second;
 
     size_t block_index = superblock_index * blocks_in_superblock;
-    size_t block_end_index = (superblock_index + 1) * blocks_in_superblock;
+    size_t block_end_index = block_index + blocks_in_superblock;
+
+    class_t rank;
 
     for (; block_index < block_end_index; ++block_index) {
-        class_t rank = unpack(offset, rank_bit_size, table, rrr_sequence).first;
+        rank = unpack_rank(offset, rank_bit_size, rrr_sequence);
         class_t rank0_in_block = block_size - rank;//rrr_sequence[block_index].first;
         if (current_rank0 + rank0_in_block >= count) {
             break;
@@ -168,9 +171,10 @@ size_t RRRSequence::select0(uint64_t count) const
         current_rank0 += rank0_in_block;
     }
 
-    // TODO: decode bits and add rank sequence
+    if (block_index == block_end_index) {
+        offset -= (rank_bit_size + table.get_bit_offset(rank));
+    }
 
-    class_t rank;
     offset_t offset_table;
     std::tie(rank, offset_table) = unpack(offset, rank_bit_size, table, rrr_sequence);
 
@@ -278,45 +282,82 @@ RRRSequence::pack(class_t rank, bit_rank_t rank_bit_size, offset_t offset, size_
     }
 }
 
+
+class_t RRRSequence::unpack_rank(size_t index, bit_rank_t rank_bit_size, rrr_sequence_t const &sequence)
+{
+    size_t rank_begin = index - rank_bit_size;
+    size_t rank_end = index;
+
+    class_t rank = 0;
+
+    size_t sequence_index = rank_begin / coding_size;
+
+    if (!(rank_begin / coding_size != rank_end / coding_size && rank_end % coding_size != 0)) {
+        auto shift_seq = sequence[sequence_index] << (rank_begin % coding_size);
+        rank = shift_seq >> (coding_size - rank_bit_size);
+    } else {
+        size_t first_part_begin = rank_begin % coding_size;
+        uint64_t first_part = sequence[sequence_index] << first_part_begin;
+        uint64_t partial_second_part = sequence[sequence_index+1] >> (coding_size - first_part_begin);
+        uint64_t full_coded_part = first_part | partial_second_part;
+        rank = full_coded_part >> (coding_size - rank_bit_size);
+    }
+    return rank;
+}
+
 std::pair<class_t, offset_t> RRRSequence::unpack(size_t index, bit_rank_t rank_bit_size, RRRTable const &rrrTable, rrr_sequence_t const &sequence)
 {
-    size_t begin = index - rank_bit_size;
+    size_t rank_begin = index - rank_bit_size;
     size_t rank_end = index;
 
     class_t rank = 0;
     offset_t offset = 0;
 
-    size_t sequence_index = begin / coding_size;
+    size_t sequence_index = rank_begin / coding_size;
 
-    if (!(begin / coding_size != rank_end / coding_size && rank_end % coding_size != 0)) {
+    if (!(rank_begin / coding_size != rank_end / coding_size && rank_end % coding_size != 0)) {
         // codded seqeunce doesn't overflow
 
-        // shift sequence to the left to get rid of predecesing 1s
-        auto shift_seq = sequence[sequence_index] << (begin % coding_size);
+        // shift sequence to the left to get rid of predecesing elements
+        auto shift_seq = sequence[sequence_index] << (rank_begin % coding_size);
 
         rank = shift_seq >> (coding_size - rank_bit_size);
         uint8_t offset_bit_size = rrrTable.get_bit_offset(rank);
 
-        offset = (shift_seq << rank_bit_size) >> (coding_size - offset_bit_size);
+        size_t offset_end = rank_end + offset_bit_size;
+        if (offset_end / coding_size != rank_begin / coding_size && offset_end % coding_size != 0) {
+            // calculate the missing part
+            size_t second_part_end = offset_end % coding_size;
+
+            // move first part so the second part can fit into lower end
+            size_t offset_first_part = shift_seq << second_part_end;
+            // get second part and shift it to lower end
+            size_t offset_second_part = sequence[sequence_index+1] >> (coding_size - second_part_end);
+
+            // combine two parts end extract the offset
+            offset = (offset_first_part | offset_second_part) << (coding_size - offset_bit_size) >> (coding_size - offset_bit_size);
+        } else  {
+            offset = (shift_seq << rank_bit_size) >> (coding_size - offset_bit_size);
+        }
     } else {
         // codded seqeunce overflows
-        size_t first_part_offset = begin % coding_size;
-        size_t first_part_size = coding_size - first_part_offset;
-        uint64_t first_part = sequence[sequence_index] << first_part_offset;
+        // get start index of the coded part
+        size_t first_part_begin = rank_begin % coding_size;
+        // get rid of all excess bits in front
+        uint64_t first_part = sequence[sequence_index] << first_part_begin;
 
-        uint64_t partial_second_part = sequence[sequence_index+1] >> (coding_size - first_part_offset);
+        // get the second part of maximal size of codded sequence 64 - start position, end set it to lower part
+        uint64_t partial_second_part = sequence[sequence_index+1] >> (coding_size - first_part_begin);
 
-        // get rank from first part and the partial second part
-        rank = (first_part | partial_second_part) >> (coding_size - rank_bit_size);
+        // combine two parts to make uint64 with offset and rank and excess bits
+        uint64_t full_coded_part = first_part | partial_second_part;
+
+        // get rank from the whole thing
+        rank = full_coded_part >> (coding_size - rank_bit_size);
 
         uint8_t offset_bit_size = rrrTable.get_bit_offset(rank);
-        size_t second_part_size = rank_bit_size + offset_bit_size - first_part_size;
 
-        // get offset by calculating second part
-        uint64_t second_part = sequence[sequence_index+1] >> (coding_size - second_part_size);
-
-        uint64_t full_coded_part = first_part | second_part;
-
+        // remove rank then shift to right for offset_size and rank_size
         offset = (full_coded_part << rank_bit_size) >> (coding_size - offset_bit_size);
     }
 
