@@ -31540,8 +31540,8 @@ access 1022413 => 67
 rank T 287434 => 69822
 access 448874 => 67
 rank C 145243 => 36205
-Tree memory consumption (kB): 38024
-Tree creation time (us): 1717887
-Average rank time (ns): 557.519417
-Average select time (ns): 3766.702567
-Average access time (ns): 850.531381
+Tree memory consumption (kB): 38056
+Tree creation time (us): 1709023
+Average rank time (ns): 625.810965
+Average select time (ns): 1690.487833
+Average access time (ns): 908.416413
