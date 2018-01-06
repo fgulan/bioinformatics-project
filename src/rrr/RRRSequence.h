@@ -79,6 +79,8 @@ private:
     static class_t unpack_rank(size_t index, bit_rank_t rank_bit_size, rrr_sequence_t const &sequence);
 
     static std::pair<class_t, offset_t> unpack(size_t index, bit_rank_t rank_bit_size, RRRTable const &rrrTable, rrr_sequence_t const &sequence);
+
+    static uint64_t extract_bits(size_t rank_begin, size_t rank_end, size_t sequence_index, const rrr_sequence_t &sequence);
 };
 
 
