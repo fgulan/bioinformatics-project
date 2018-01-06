@@ -17,10 +17,13 @@ using block_size_t = size_t;
 using class_t = uint64_t;
 using offset_t = uint64_t;
 
+using superblock_offset_t = size_t;
+
 using block_bit_t = uint64_t;
 using rank_vector_per_bit_t = std::vector<class_t>;
 
-using bit_offset_t = uint64_t;
+using bit_rank_t = uint8_t;
+using bit_offset_t = uint8_t;
 
 using block_vector_t = std::string;
 
@@ -30,8 +33,8 @@ using rank_vector_per_bit_t = std::vector<class_t>;
 
 using superblock_size_t = size_t;
 
-using rrr_sequence_t = std::vector<std::pair<class_t, offset_t>>;
-using superblock_sequence_t = std::vector<std::pair<class_t, offset_t>>;
+using rrr_sequence_t = std::vector<uint64_t>;
+using superblock_sequence_t = std::vector<std::pair<class_t, superblock_offset_t>>;
 
 using char_t = char;
 using alphabet_t = std::vector<char_t>;

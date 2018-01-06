@@ -13,7 +13,8 @@ RRRSequence::RRRSequence(block_vector_t const &sequence,
                          block_size_t block_size,
                          RRRTable const &table) : blocks_in_superblock(blocks_in_superblock),
                                                   block_size(block_size),
-                                                  table(table)
+                                                  table(table),
+                                                  rank_bit_size(static_cast<bit_rank_t>(std::ceil(std::log2(block_size + 1))))
 {
     // Number of blocks in sequence
     size_t block_number = static_cast<size_t>(std::ceil(
@@ -29,9 +30,12 @@ RRRSequence::RRRSequence(block_vector_t const &sequence,
     // Current global rank
     class_t global_rank = 0;
     // Current superblock offset
-    offset_t superblock_offset = 0;
+
+    size_t index = 0;
+    uint8_t filled_bits = 0;
 
     for (size_t i = 0; i < superblock_number; ++i) {
+        superblock_offset_t superblock_offset = coding_size * index + filled_bits + rank_bit_size;
         superblocks.emplace_back(global_rank, superblock_offset);
 
         for (size_t j = 0; j < blocks_in_superblock; ++j) {
@@ -48,12 +52,11 @@ RRRSequence::RRRSequence(block_vector_t const &sequence,
             block_vector_t block = block_vector_t(block_begin, block_end);
 
             std::pair<class_t, offset_t> rank_offset_pair = create_rank_offset_pair(block);
-            rrr_sequence.push_back(rank_offset_pair);
+            pack(rank_offset_pair.first, rank_bit_size, rank_offset_pair.second, index, rrr_sequence, filled_bits, table);
 
             global_rank += rank_offset_pair.first;
 
             // Offset at what index in RRR sequence this superblock begins.
-            superblock_offset++;
         }
     }
 }
@@ -78,14 +81,21 @@ RRRSequence::rank1(size_t index) const
 
     // Accumulate rank from previous superblocks
     class_t result = superblocks[superblock_index].first;
-    auto i = superblock_index * blocks_in_superblock;
-    for (; i != block_index; ++i) {
-        result += rrr_sequence[i].first;
+    superblock_offset_t offset = superblocks[superblock_index].second;
+    for(size_t i = superblock_index * blocks_in_superblock; i < block_index; ++i) {
+        // TODO: decode bits and add rank
+        class_t rank = unpack(offset, rank_bit_size, table, rrr_sequence).first;
+        result += rank;
+        offset += rank_bit_size + table.get_bit_offset(rank);
     }
 
+    class_t rank;
+    offset_t table_offset;
+    std::tie(rank, table_offset) = unpack(offset, rank_bit_size, table, rrr_sequence);
+
     // Accumulate rank from last block
-    result += table.get_rank_at_index(rrr_sequence[i].first,
-                                      rrr_sequence[i].second,
+    result += table.get_rank_at_index(rank,
+                                      table_offset,
                                       index % block_size);
     return result;
 }
@@ -108,27 +118,29 @@ RRRSequence::select1(uint64_t count) const
 
     // Get current superblock with whose cumulative rank is smaller than count
     class_t current_rank = superblocks[superblock_index].first;
-    offset_t block_index = superblocks[superblock_index].second;
+    superblock_offset_t offset = superblocks[superblock_index].second;
     size_t sequence_size = rrr_sequence.size();
-    offset_t block_end_index = std::min((superblock_index + 1) * blocks_in_superblock,
-                                        sequence_size);
+
+    size_t block_index = superblock_index * blocks_in_superblock;
+    size_t block_end_index = (superblock_index + 1) * blocks_in_superblock;
 
     for (; block_index < block_end_index; ++block_index) {
-        if (current_rank + rrr_sequence[block_index].first >= count) {
+        class_t rank = unpack(offset, rank_bit_size, table, rrr_sequence).first;
+        if (current_rank + rank >= count) {
             break;
         }
-        current_rank += rrr_sequence[block_index].first;
+        offset += rank_bit_size + table.get_bit_offset(rank);
+        current_rank += rank;
     }
 
-    // Take care if we are at sequence_last_index + 1 in
-    // case that break isn't executed in previous for loop
-    if (block_index == sequence_size) {
-        block_index--;
-    }
+    // TODO: decode bits and add rank
+    class_t rank;
+    offset_t offset_table;
+    std::tie(rank, offset_table) = unpack(offset, rank_bit_size, table, rrr_sequence);
 
     // Get the index in block whose rank is equal to count - current_rank
-    size_t result = table.index_with_rank1(rrr_sequence[block_index].first,
-                                           rrr_sequence[block_index].second,
+    size_t result = table.index_with_rank1(rank,
+                                           offset_table,
                                            static_cast<class_t>(count) - current_rank);
     // Index to this superblock
     result += block_index * block_size;
@@ -141,21 +153,30 @@ size_t RRRSequence::select0(uint64_t count) const
     size_t superblock_index = get_superblock0_index_for_count(count);
     class_t current_rank0 = superblock_index * blocks_in_superblock * block_size
                             - superblocks[superblock_index].first;
-    offset_t block_index = superblocks[superblock_index].second;
-    offset_t block_end_index = std::min((superblock_index + 1) * blocks_in_superblock,
-                                        rrr_sequence.size());
+    superblock_offset_t offset = superblocks[superblock_index].second;
+
+    size_t block_index = superblock_index * blocks_in_superblock;
+    size_t block_end_index = (superblock_index + 1) * blocks_in_superblock;
 
     for (; block_index < block_end_index; ++block_index) {
-        class_t rank0_in_block = block_size - rrr_sequence[block_index].first;
+        class_t rank = unpack(offset, rank_bit_size, table, rrr_sequence).first;
+        class_t rank0_in_block = block_size - rank;//rrr_sequence[block_index].first;
         if (current_rank0 + rank0_in_block >= count) {
             break;
         }
+        offset += rank_bit_size + table.get_bit_offset(rank);
         current_rank0 += rank0_in_block;
     }
 
+    // TODO: decode bits and add rank sequence
+
+    class_t rank;
+    offset_t offset_table;
+    std::tie(rank, offset_table) = unpack(offset, rank_bit_size, table, rrr_sequence);
+
     // Get the index in block whose rank is equal to count - current_rank0
-    size_t result = table.index_with_rank0(rrr_sequence[block_index].first,
-                                           rrr_sequence[block_index].second,
+    size_t result = table.index_with_rank0(rank,
+                                           offset_table,
                                            static_cast<class_t>(count - current_rank0));
     // Index to this superblock
     result += block_index * block_size;
@@ -188,8 +209,8 @@ class_t
 RRRSequence::popcount_for_block(block_vector_t block) const
 {
     class_t rank = 0;
-    for (auto it = block.begin(), end = block.end(); it != end; ++it) {
-        if (*it == ONE) {
+    for (char &it : block) {
+        if (it == ONE) {
             rank++;
         }
     }
@@ -226,4 +247,78 @@ size_t RRRSequence::get_superblock0_index_for_count(uint64_t count) const
         }
     }
     return begin - 1;
+}
+
+void
+RRRSequence::pack(class_t rank, bit_rank_t rank_bit_size, offset_t offset, size_t &index, rrr_sequence_t &sequence, uint8_t &filled_bits, RRRTable const &rrrTable)
+{
+    uint8_t offset_size = rrrTable.get_bit_offset(rank);
+
+    uint64_t coded = (rank << offset_size) | offset;
+
+    uint8_t coded_bit_size = rank_bit_size + offset_size;
+
+    auto pack_bits = static_cast<int64_t>(coding_size - filled_bits - coded_bit_size);
+
+    if (sequence.size() <= index) {
+        sequence.emplace_back(0);
+    }
+
+    if (pack_bits < 0) {
+        sequence[index] |= coded >> std::abs(pack_bits);
+
+        uint64_t rest_of_coded = coded << (2 * coding_size - filled_bits - coded_bit_size);
+        sequence.emplace_back(rest_of_coded);
+        filled_bits = coded_bit_size + filled_bits - coding_size;
+
+        index++;
+    } else {
+        sequence[index] |= coded << pack_bits;
+        filled_bits += coded_bit_size;
+    }
+}
+
+std::pair<class_t, offset_t> RRRSequence::unpack(size_t index, bit_rank_t rank_bit_size, RRRTable const &rrrTable, rrr_sequence_t const &sequence)
+{
+    size_t begin = index - rank_bit_size;
+    size_t rank_end = index;
+
+    class_t rank = 0;
+    offset_t offset = 0;
+
+    size_t sequence_index = begin / coding_size;
+
+    if (!(begin / coding_size != rank_end / coding_size && rank_end % coding_size != 0)) {
+        // codded seqeunce doesn't overflow
+
+        // shift sequence to the left to get rid of predecesing 1s
+        auto shift_seq = sequence[sequence_index] << (begin % coding_size);
+
+        rank = shift_seq >> (coding_size - rank_bit_size);
+        uint8_t offset_bit_size = rrrTable.get_bit_offset(rank);
+
+        offset = (shift_seq << rank_bit_size) >> (coding_size - offset_bit_size);
+    } else {
+        // codded seqeunce overflows
+        size_t first_part_offset = begin % coding_size;
+        size_t first_part_size = coding_size - first_part_offset;
+        uint64_t first_part = sequence[sequence_index] << first_part_offset;
+
+        uint64_t partial_second_part = sequence[sequence_index+1] >> (coding_size - first_part_offset);
+
+        // get rank from first part and the partial second part
+        rank = (first_part | partial_second_part) >> (coding_size - rank_bit_size);
+
+        uint8_t offset_bit_size = rrrTable.get_bit_offset(rank);
+        size_t second_part_size = rank_bit_size + offset_bit_size - first_part_size;
+
+        // get offset by calculating second part
+        uint64_t second_part = sequence[sequence_index+1] >> (coding_size - second_part_size);
+
+        uint64_t full_coded_part = first_part | second_part;
+
+        offset = (full_coded_part << rank_bit_size) >> (coding_size - offset_bit_size);
+    }
+
+    return std::make_pair(rank, offset);
 }

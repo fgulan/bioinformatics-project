@@ -25,7 +25,7 @@ RRRTable::RRRTable(block_size_t block_size) : table{block_size + 1},
             table[i].emplace_back(block_vector_to_bit_block(block), rank_per_bit(block));
         } while (std::next_permutation(block.begin(), block.end()));
 
-        bit_offset_vector[i] = static_cast<bit_offset_t>(std::ceil(std::log2(table[i].size())));
+        bit_offset_vector[i] = std::max(static_cast<bit_offset_t>(1), static_cast<bit_offset_t>(std::ceil(std::log2(table[i].size()))));
     }
 }
 

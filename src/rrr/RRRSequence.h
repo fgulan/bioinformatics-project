@@ -48,6 +48,8 @@ public:
 
 private:
 
+    static constexpr uint8_t coding_size = 8 * sizeof(uint64_t);
+
     RRRTable table;
 
     block_size_t block_size;
@@ -57,6 +59,8 @@ private:
     superblock_sequence_t superblocks;
 
     rrr_sequence_t rrr_sequence;
+
+    bit_rank_t rank_bit_size;
 
 private:
 
@@ -69,6 +73,10 @@ private:
     block_size_t get_block_size(size_t sequence_length) const;
 
     size_t get_superblock0_index_for_count(uint64_t count) const;
+
+    static void pack(class_t rank, bit_rank_t rank_bit_size, offset_t offset, size_t &index, rrr_sequence_t &sequence, uint8_t &filled_bits, RRRTable const &rrrTable);
+
+    static std::pair<class_t, offset_t> unpack(size_t index, bit_rank_t rank_bit_size, RRRTable const &rrrTable, rrr_sequence_t const &sequence);
 };
 
 
