@@ -108,10 +108,10 @@ RRRSequence::select1(uint64_t count) const
 {
     // Get superblock with whose cumulative rank is smaller than count
     // So found_index - 1
-    std::pair<class_t, offset_t> superblock{count, 0};
+    std::pair<class_t, superblock_offset_t > superblock{count, 0};
     auto superblock_iterator = std::lower_bound(superblocks.begin(), superblocks.end(), superblock);
     auto distance = std::distance(superblocks.begin(), superblock_iterator);
-    auto superblock_index = static_cast<size_t>(std::max<class_t>(0, distance - 1));
+    auto superblock_index = static_cast<size_t>(std::max<int64_t>(0, distance - 1));
 
     // Get current superblock with whose cumulative rank is smaller than count
     class_t current_rank = superblocks[superblock_index].first;
