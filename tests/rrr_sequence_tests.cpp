@@ -2,7 +2,7 @@
 // Created by Filip Gulan on 01/01/2018.
 //
 
-//#define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_MAIN
 
 #include "catch.h"
 #include "../src/rrr/RRRSequence.h"
