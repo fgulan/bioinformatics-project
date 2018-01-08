@@ -68,7 +68,6 @@ int main(int argc, char *argv[])
     statistics += "Average rank time (ns): " + std::to_string(rank_avrg_nano) + "\n";
     statistics += "Average select time (ns): " + std::to_string(select_avrg_nano) + "\n";
     statistics += "Average access time (ns): " + std::to_string(access_avrg_nano) + "\n";
-    output += statistics;
 
     std::ofstream output_stream(argv[3]);
     output_stream << output;

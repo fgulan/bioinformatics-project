@@ -14,8 +14,8 @@
 
 using block_size_t = size_t;
 
-using class_t = uint64_t;
-using offset_t = uint64_t;
+using class_t = uint32_t;
+using offset_t = uint32_t;
 
 using superblock_offset_t = size_t;
 
