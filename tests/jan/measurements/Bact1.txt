@@ -1,0 +1,5 @@
+Tree memory consumption (kB): 4700
+Tree creation time (us): 81731
+Average rank time (ns): 504.164477
+Average select time (ns): 677.644772
+Average access time (ns): 1138.266927
