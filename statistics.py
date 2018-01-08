@@ -41,8 +41,8 @@ def print_stat(desc, index):
         jan_value = value[index]
         print('{:24}|{:14}|{:17}|{:11}|'.format(filename, packed_value, nonpacked_value, jan_value))
 
-print_stat("TREE MEMORY:", 0)
-print_stat("TREE TIME:", 1)
-print_stat("RANK TIME:", 2)
-print_stat("SELECT TIME:", 3)
-print_stat("ACCESS TIME:", 4)
+print_stat("TREE MEMORY (kB):", 0)
+print_stat("TREE TIME (us):", 1)
+print_stat("RANK TIME (ns):", 2)
+print_stat("SELECT TIME (ns):", 3)
+print_stat("ACCESS TIME (ns):", 4)
