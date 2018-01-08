@@ -1,0 +1,21 @@
+#!/bin/sh
+./cmake-build-release/bioinformatics_project tests/sequences/4_100.txt tests/commands/4_100.txt tests/outputs/4_100.txt > tests/measurements/4_100.txt
+./cmake-build-release/bioinformatics_project tests/sequences/4_1000.txt tests/commands/4_1000.txt tests/outputs/4_1000.txt > tests/measurements/4_1000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/4_10000.txt tests/commands/4_10000.txt tests/outputs/4_10000.txt > tests/measurements/4_10000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/4_100000.txt tests/commands/4_100000.txt tests/outputs/4_100000.txt > tests/measurements/4_100000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/4_1000000.txt tests/commands/4_1000000.txt tests/outputs/4_1000000.txt > tests/measurements/4_1000000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/15_100.txt tests/commands/15_100.txt tests/outputs/15_100.txt > tests/measurements/15_100.txt
+./cmake-build-release/bioinformatics_project tests/sequences/15_1000.txt tests/commands/15_1000.txt tests/outputs/15_1000.txt > tests/measurements/15_1000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/15_10000.txt tests/commands/15_10000.txt tests/outputs/15_10000.txt > tests/measurements/15_10000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/15_100000.txt tests/commands/15_100000.txt tests/outputs/15_100000.txt > tests/measurements/15_100000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/15_1000000.txt tests/commands/15_1000000.txt tests/outputs/15_1000000.txt > tests/measurements/15_1000000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/26_100.txt tests/commands/26_100.txt tests/outputs/26_100.txt > tests/measurements/26_100.txt
+./cmake-build-release/bioinformatics_project tests/sequences/26_1000.txt tests/commands/26_1000.txt tests/outputs/26_1000.txt > tests/measurements/26_1000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/26_10000.txt tests/commands/26_10000.txt tests/outputs/26_10000.txt > tests/measurements/26_10000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/26_100000.txt tests/commands/26_100000.txt tests/outputs/26_100000.txt > tests/measurements/26_100000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/26_1000000.txt tests/commands/26_1000000.txt tests/outputs/26_1000000.txt > tests/measurements/26_1000000.txt
+./cmake-build-release/bioinformatics_project tests/sequences/HIV.txt tests/commands/HIV.txt tests/outputs/HIV.txt > tests/measurements/HIV.txt
+./cmake-build-release/bioinformatics_project tests/sequences/escherichia_coli.txt tests/commands/escherichia_coli.txt tests/outputs/escherichia_coli.txt > tests/measurements/escherichia_coli.txt
+./cmake-build-release/bioinformatics_project tests/sequences/Flu.txt tests/commands/Flu.txt tests/outputs/Flu.txt > tests/measurements/Flu.txt
+./cmake-build-release/bioinformatics_project tests/sequences/Camelpox.txt tests/commands/Camelpox.txt tests/outputs/Camelpox.txt > tests/measurements/Camelpox.txt
+./cmake-build-release/bioinformatics_project tests/sequences/Bact1.txt tests/commands/Bact1.txt tests/outputs/Bact1.txt > tests/measurements/Bact1.txt
