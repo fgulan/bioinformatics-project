@@ -6,6 +6,7 @@
 #define BIOINFORMATICS_PROJECT_RRRTABLE_H
 
 #include "../shared/common.h"
+#include <algorithm>
 
 class RRRTable
 {
@@ -50,11 +51,11 @@ public:
     operator=(RRRTable &&) = default;
 
     /**
-     * Offset in the table for given rank and block vector
-     * @param rank rank of the block vector
-     * @param block_vector block vector value
-     * @return offset in the table of the block vector of given rank
-     */
+    * Offset in the table for given rank and block vector
+    * @param rank rank of the block vector
+    * @param block_vector block vector value
+    * @return offset in the table of the block vector of given rank
+    */
     offset_t
     get_offset_for_rank(class_t rank, block_vector_t const &block_vector) const;
 

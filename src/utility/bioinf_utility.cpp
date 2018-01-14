@@ -3,6 +3,7 @@
 //
 
 #include <fstream>
+#include <cstring>
 #include "bioinf_utility.h"
 
 #ifdef __APPLE__
