@@ -40,5 +40,5 @@ Program expects 3 arguments:
 For running given example:
 
 ```bash
-./bioinformatics_project example/ecoli_seq.txt example/ecoli_commands.txt example/ecoli_outs.txt > example/ecoli_stats.txt
+$ ./bioinformatics_project example/ecoli_seq.txt example/ecoli_commands.txt example/ecoli_outs.txt > example/ecoli_stats.txt
 ```
