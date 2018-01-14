@@ -1,0 +1,22 @@
+Projekt je implementiran u programskom jeziku C++, programski kod dostupan je u datoteci \emph{src}. Kod koji implementira RRR strukturu nalazi se u datoteci \emph{src/rrr}, kod za binarno stablo valića u datoteci \emph{src/wavelet}, dok je kod koji sadrži pomoćne funkcije unutar datoteke \emph{src/utilty} te kod koji sadrži dijeljene definicije unutar \emph{src/shared}. Projekt je definiran \emph{Cmake} alatom koji služi za generiranje projekata za razna interaktivna razvijateljska sučelja za C++.
+
+\subsubsection{RRRSequence}
+Ovaj razred predstavlja RRR strukturu, koja se koristi za spremanje čvorova stabla valića u kodiranom ili ne kodiranom obliku. Razred sadrži metode za izvođenje upita rank0, rank1, select0, select1, access. Postoje dvije implementacije ovog razreda, jedna je pomoću kodiranja i druga bez kodiranja opisanog u prethodnom poglavlju. Implementacija bez kodiranja se nalazi na glavnoj grani git repozitroija, dok je implementacija s kodiranjem na grani feature/packing-unpacking-sequence istog repozitorija.
+
+\subsubsection{RRRTable}
+Ovaj razred je pomoćna struktura koja se koristi kod izgradnje i izvršavanja upita nad RRR strukturama. Sadrži metode za dohvat ranka0 i ranka1 na $i$-tom indeksu unutar nekog bloka, odmaka za dani rank i blok te metodu za dohvat broja bitova odmaka za dani rank.
+
+\subsubsection{WaveletTree}
+Ovaj razred predstavlja binarno stablo valića te sadrži metode za vršenje rank, select i access upita.
+
+\subsubsection{WaveletNode}
+Ovaj razred predstavlja čvor binarnog stabla valića  sadržava referencu na RRR strukturu stvorenu prilikom izgradnje stabla. Također sadrži metode za vršenje rank, select i access upita nad.
+
+\subsubsection{bioinf\_utility}
+Kod koji se koristi kod izvođenja glavnog programa za čitanje datoteka i dohvat memorije za pojedine operacijske sustave.
+
+\subsubsection{common}
+Header koji sadrži sve podatkovne tipove definirane za korištenje unutar implementacije strukture.
+
+\subsubsection{main}
+Glavna ulazna točka programa, sadrži metode za mjerenje memorije i vremena.

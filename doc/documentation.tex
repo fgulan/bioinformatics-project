@@ -1,0 +1,53 @@
+\documentclass[times, utf8, seminar, numeric]{fer}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{pgfplots}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\renewcommand{\algorithmicforall}{\textbf{for each}}
+\pgfplotsset{compat=1.15}
+\begin{document}
+
+\nocite{*}
+
+\title{Izgradnja binarnog stabla valića kao RRR strukture}
+
+\author{Jure Čular 0036479001 \and 
+        Bartol Freškura 0036480392 \and 
+        Filip Gulan 0036479428}
+
+\maketitle{}
+
+\tableofcontents
+
+\chapter{Uvod}
+\input{chapters/intro.tex}
+
+\chapter{RRR struktura podataka}
+\input{chapters/rrr.tex}
+
+\chapter{Stablo valića}
+\input{chapters/wavelet-tree.tex}
+
+\chapter{Testiranje i rezultati}
+\input{chapters/results.tex}
+
+\chapter{Opis implementacije}
+\input{chapters/implementation.tex}
+
+\chapter{Zaključak}
+\input{chapters/conclusion.tex}
+
+\bibliography{literatura}
+\bibliographystyle{fer}
+
+\end{document}
