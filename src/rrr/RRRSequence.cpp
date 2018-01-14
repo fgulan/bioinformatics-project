@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <cassert>
+#include <tuple>
 #include "RRRSequence.h"
 
 // MARK: - Constructors -
