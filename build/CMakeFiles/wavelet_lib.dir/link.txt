@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libwavelet_lib.a  CMakeFiles/wavelet_lib.dir/src/rrr/RRRTable.cpp.o CMakeFiles/wavelet_lib.dir/src/rrr/RRRSequence.cpp.o CMakeFiles/wavelet_lib.dir/src/wavelet/WaveletNode.cpp.o CMakeFiles/wavelet_lib.dir/src/wavelet/WaveletTree.cpp.o CMakeFiles/wavelet_lib.dir/src/utility/bioinf_utility.cpp.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libwavelet_lib.a
