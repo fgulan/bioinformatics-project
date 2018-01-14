@@ -1,7 +1,6 @@
 # Construction of binary wavelet tree using RRR structure.
 
-Project repository for [Bioinformathics](http://www.fer.unizg.hr/predmet/bio)
-course held at Faculty of Electrical Engineering and Computing, University of Zagreb.
+Project repository for [Bioinformatics](http://www.fer.unizg.hr/predmet/bio) course held at Faculty of Electrical Engineering and Computing, University of Zagreb.
 
 ## Title
 
@@ -19,7 +18,8 @@ Filip Gulan, 0036479428
 * _src_ directory contains C++ source code of the project
 * _tests_ directory contains unit tests measurment tests 
 
-## Compiling on Linux
+## Compiling
+
 * Position terminal working directory in the root folder of project.
 * Run command:
     ```bash
