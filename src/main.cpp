@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <numeric>
+#include <chrono>
 #include "utility/bioinf_utility.h"
 #include "wavelet/WaveletTree.h"
 
