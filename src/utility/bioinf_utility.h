@@ -9,14 +9,16 @@
 #include "../shared/common.h"
 
 /**
- * Used to reac FASTA files
+ * Used to read FASTA files
  * @param filename name of the FASTA file
  * @return contents of the FASTA file
+ * @author Filip Gulan
  */
 std::string read_fasta_file(char const* filename);
 
 /**
  * Returns current memory used
+ * @authors Jure Cular, Filip Gulan
  */
 measured_memory_t get_current_memory();
 
