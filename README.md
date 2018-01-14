@@ -24,7 +24,8 @@ Construction of binary wavelet tree using RRR structure.
 * Position working directory in the root folder of project.
 * Run command:
     ```bash
-    cmake --build build/ --target bioinformatics_project
+    $ cmake CMakeLists.txt 
+    $ cmake --build ./ --target bioinformatics_project
     ```
     This command will compile the project to a `bioinformatics_project` executable file inside `cmake-build-release` folder.
 
@@ -39,5 +40,5 @@ Program expects 3 arguments:
 For running given example:
 
 ```bash
-./build/bioinformatics_project example/ecoli_seq.txt example/ecoli_commands.txt example/ecoli_outs.txt > example/ecoli_stats.txt
+./bioinformatics_project example/ecoli_seq.txt example/ecoli_commands.txt example/ecoli_outs.txt > example/ecoli_stats.txt
 ```
