@@ -16,11 +16,11 @@ Construction of binary wavelet tree using RRR structure.
 
 * _doc_ directory contains the project documentation sources. Check _documentation.pdf_ file for more details about the project and measurement results
 * _src_ directory contains C++ source code of the project
-* _tests_ directory contains unit tests measurment tests 
+* _tests_ directory contains unit tests and measurements tests 
 
 ## Compiling
 
-* Position terminal working directory in the root folder of project.
+* Position working directory in the root folder of project.
 * Run command:
     ```bash
     cmake --build cmake-build-release/ --target bioinformatics_project
@@ -29,7 +29,7 @@ Construction of binary wavelet tree using RRR structure.
 
 ## Run instructions
 
-Program expects 3 arugments:
+Program expects 3 arguments:
 
 1. filename of the sequence in FASTA format
 2. filename of the commands file to be executed
