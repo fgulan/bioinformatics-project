@@ -16,7 +16,8 @@ Construction of binary wavelet tree using RRR structure.
 
 * _doc_ directory contains the project documentation sources. Check _documentation.pdf_ file for more details about the project and measurement results
 * _src_ directory contains C++ source code of the project
-* _tests_ directory contains unit tests and measurements tests 
+* _tests_ directory contains unit tests and measurements tests
+* Branch [feature/packing-unpacking-sequence](https://github.com/fgulan/bioinformatics-project/tree/feature/packing-unpacking-sequence) contains coded RRR sequence as described in documentation
 
 ## Compiling
 
