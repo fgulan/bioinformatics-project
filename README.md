@@ -8,11 +8,9 @@ Construction of binary wavelet tree using RRR structure.
 
 ## Team members
 
-Jure Čular, 0036479001
-
-Bartol Freškura, 0036480392
-
-Filip Gulan, 0036479428
+* Jure Čular, 0036479001
+* Bartol Freškura, 0036480392
+* Filip Gulan, 0036479428
 
 ## Repository contents
 
