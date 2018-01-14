@@ -1,0 +1,5 @@
+/Users/filipgulan/college/bioinformatics-project/build/CMakeFiles/rebuild_cache.dir
+/Users/filipgulan/college/bioinformatics-project/build/CMakeFiles/edit_cache.dir
+/Users/filipgulan/college/bioinformatics-project/build/CMakeFiles/bioinformatics_project.dir
+/Users/filipgulan/college/bioinformatics-project/build/CMakeFiles/run_tests.dir
+/Users/filipgulan/college/bioinformatics-project/build/CMakeFiles/wavelet_lib.dir
