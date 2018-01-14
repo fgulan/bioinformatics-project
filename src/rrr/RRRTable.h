@@ -6,6 +6,7 @@
 #define BIOINFORMATICS_PROJECT_RRRTABLE_H
 
 #include "../shared/common.h"
+#include <algorithm>
 
 class RRRTable
 {
