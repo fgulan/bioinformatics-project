@@ -13,6 +13,10 @@ void measure_rank(std::string command, WaveletTree& tree, std::vector<measured_t
 void measure_select(std::string command, WaveletTree& tree, std::vector<measured_time_t>& times, std::string& output);
 void measure_access(std::string command, WaveletTree& tree, std::vector<measured_time_t>& times, std::string& output);
 
+/**
+ * Main entry
+ * @author Filip Gulan
+ */
 int main(int argc, char *argv[])
 {
     if (argc != 4) {

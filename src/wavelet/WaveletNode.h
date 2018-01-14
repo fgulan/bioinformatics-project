@@ -9,6 +9,10 @@
 #include "../shared/common.h"
 #include "../rrr/RRRSequence.h"
 
+/**
+ * WaveletNode is a node representation of a binary wavelet tree implemented using RRR structure.
+ * @author Bartol Freskura
+ */
 class WaveletNode
 {
 public:

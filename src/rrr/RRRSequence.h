@@ -7,7 +7,11 @@
 
 #include "../shared/common.h"
 #include "RRRTable.h"
-
+/**
+ * RRRSequence is a structure which offers O(1) rank queries and
+ * zeroth-order entropy compression for binary strings.
+ * @author Jure Cular
+ */
 class RRRSequence
 {
 public:
@@ -41,7 +45,7 @@ public:
     /**
      * Class constructor
      * @param sequence sequence of 1s and 0s
-     * @param blocks_in_superblock  number of blocks in superblock
+     * @param blocks_in_superblock number of blocks in superblock
      * @param block_size block size
      * @param table instance of RRR table
      */

@@ -9,6 +9,10 @@
 #include "WaveletNode.h"
 #include "../shared/common.h"
 
+/**
+ * WaveletTree is a binary wavelet tree implemented using RRR structure.
+ * @author Filip Gulan
+ */
 class WaveletTree
 {
 public:

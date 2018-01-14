@@ -8,6 +8,10 @@
 #include "../shared/common.h"
 #include <algorithm>
 
+/**
+ * RRRTable is a table of all possible bit permutations for given block size.
+ * @author Jure Cular
+ */
 class RRRTable
 {
 public:
